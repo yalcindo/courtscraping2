@@ -37,7 +37,6 @@ writeStream.write('LastName,'+'Name,' + 'County,'+'Indictment,'+'Defendant Numbe
 	'Age Today,' + 'Offense Description,' + 'Sentencing Place,'+'Sentencing Date,'+'Sentencing Type ,'+'Age at sentence,'+
 	'Jail,' + 'Parole Ineligibility,'+'Probation,'+'Penalty,' + 'Fine,'+'Lab Fee,'+ 'DEDR,'+'Restitution,'+'Judge Lastname,' + 'Judge Firstname,' + 'Comments'+'\n');
 
-	
 	request("http://php.app.com/njsent/details.php?recordID=1",function(err,response,body)
 	{
 		if (!err && response.statusCode == 200) {
@@ -48,6 +47,8 @@ writeStream.write('LastName,'+'Name,' + 'County,'+'Indictment,'+'Defendant Numbe
 
 				var value1=$(this).children().eq(1).text();
 				var value2=$(this).children().eq(3).text();
+				value1 = value1.replace(";", " ");
+				value2 = value2.replace(";", " ");
 			
 				if(value1!=="" && value2!==""){
 					if(csvString==="")
@@ -71,7 +72,6 @@ writeStream.write('LastName,'+'Name,' + 'County,'+'Indictment,'+'Defendant Numbe
          
 		}
 	});
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
