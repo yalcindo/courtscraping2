@@ -37,7 +37,7 @@ writeStream.write('LastName,'+'Name,' + 'County,'+'Indictment,'+'Defendant Numbe
 	'Age Today,' + 'Offense Description,' + 'Sentencing Place,'+'Sentencing Date,'+'Sentencing Type ,'+'Age at sentence,'+
 	'Jail,' + 'Parole Ineligibility,'+'Probation,'+'Penalty,' + 'Fine,'+'Lab Fee,'+ 'DEDR,'+'Restitution,'+'Judge Lastname,' + 'Judge Firstname,' + 'Comments'+'\n');
 
-	request("http://php.app.com/njsent/details.php?recordID=1",function(err,response,body)
+	request("http://php.app.com/njsent/details.php?recordID=3",function(err,response,body)
 	{
 		if (!err && response.statusCode == 200) {
 			$ =cheerio.load(body);
