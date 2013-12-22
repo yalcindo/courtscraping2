@@ -52,15 +52,15 @@ writeStream.write('Name,' + 'County,'+'Indictment,'+'Defendant Number,'+'DOB,'+
 				column2 = column2.replace(";", "");
 				column1 = column1.replace(",", "");
 				column2 = column2.replace(",", "");
-				if(i!==0 && i!==4 && i!==6 && i!==10 && i!==13)
+				if(i!==0 && i!==4 && i!==6 && i!==10 && i!==13 && i!==5)
 				{
 					if(column1==="")
 					{
-						column1="No information"
+						column1="No information"+i;
 					}
 					if(column2==="")
 					{
-						column2="No information"
+						column2="no information"+i;
 					}
 				}
 			
