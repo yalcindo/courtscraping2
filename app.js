@@ -8,6 +8,10 @@ var cheerio=require("cheerio");
 var writeStream1 = fs.createWriteStream("file1.csv");
 var writeStream2 = fs.createWriteStream("file2.csv");
 var writeStream3 = fs.createWriteStream("file3.csv");
+var writeStream4 = fs.createWriteStream("file4.csv");
+var writeStream5 = fs.createWriteStream("file5.csv");
+var writeStream6 = fs.createWriteStream("file6.csv");
+var writeStream7 = fs.createWriteStream("file7.csv");
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -46,16 +50,29 @@ var getCourtData=function(num){
 	if(1===num){
 		writeStream1.write(header);
 	}
-	if (1001===num){
+	if (50001===num){
 		writeStream2.write(header);
 	}
-	if(2001===num){
+	if(100001===num){
 		writeStream3.write(header);
 	}
-	if(3000<num)
-	{
+	if(150001===num){
+		writeStream4.write(header);
+	}
+	if(200001===num){
+		writeStream5.write(header);
+	}
+	if(250001===num){
+		writeStream6.write(header);
+	}
+	if(300001===num){
+		writeStream7.write(header);
+	}
+	if(347000<num){
+		console.log("It is done");
 		return;
 	}
+	
 
 	request("http://php.app.com/njsent/details.php?recordID="+num,function(err,response,body)
 	{
@@ -101,16 +118,34 @@ var getCourtData=function(num){
          	offDesc,place,date,type,ageAtSentence,jail,paroleIn,
          	prob,penalty,fine,labFee,dedr,restituion,judge,comments);
 		}
-		if(num<=1000){
+		
+		if(num<=50000){
 			writeStream1.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
 		}
-		if(1000<num && num<=2000)
+		if(50000<num && num<=100000)
 		{
 			writeStream2.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
 		}
-		if(2000<num && num<=3000)
+		if(100000<num && num<=150000)
 		{
 			writeStream3.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
+		if(150000<num && num<=200000)
+		{
+			writeStream4.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
+		if(200000<num && num<=250000)
+		{
+			writeStream5.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
+		if(200000<num && num<=250000)
+		{
+			writeStream6.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
+
+		if(300000<num)
+		{
+			writeStream7.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
 		}
 	});
 
@@ -118,7 +153,7 @@ var getCourtData=function(num){
     setTimeout(function(){
 	   	num++;
 	   	getCourtData(num);
-   	},5000);
+   	},3000);
    
 };
 // initiliaze the process
