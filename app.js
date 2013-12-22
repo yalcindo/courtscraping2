@@ -5,7 +5,9 @@
 var fs = require('fs');
 var request=require("request");
 var cheerio=require("cheerio");
-var writeStream = fs.createWriteStream("file.csv");
+var writeStream1 = fs.createWriteStream("file1.csv");
+var writeStream2 = fs.createWriteStream("file2.csv");
+var writeStream3 = fs.createWriteStream("file3.csv");
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -34,13 +36,27 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/users', user.list);
  
- var apple="923,864,612";
-  
-writeStream.write('Name,' + 'County,'+'Indictment,'+'Defendant Number,'+'DOB,'+
-	'Age Today,' + 'Offense Description,' + 'Sentencing Place,'+'Sentencing Date,'+'Sentencing Type ,'+'Age at sentence,'+
-	'Jail,' + 'Parole Ineligibility,'+'Probation,'+'Penalty,' + 'Fine,'+'Lab Fee,'+ 'DEDR,'+'Restitution,'+'Judge,' + 'Comments'+'\n');
- var getCourtData=function(num){
-  if (1000<num){return;}
+var header='Name,' + 'County,'+'Indictment,'+'Defendant Number,'+'DOB,'+
+		'Age Today,' + 'Offense Description,' + 'Sentencing Place,'+'Sentencing Date,'+'Sentencing Type ,'+'Age at sentence,'+
+		'Jail,' + 'Parole Ineligibility,'+'Probation,'+'Penalty,' + 'Fine,'+'Lab Fee,'+ 'DEDR,'+'Restitution,'+'Judge,' + 'Comments'+'\n';
+
+
+
+var getCourtData=function(num){
+	if(1===num){
+		writeStream1.write(header);
+	}
+	if (1001===num){
+		writeStream2.write(header);
+	}
+	if(2001===num){
+		writeStream3.write(header);
+	}
+	if(3000<num)
+	{
+		return;
+	}
+
 	request("http://php.app.com/njsent/details.php?recordID="+num,function(err,response,body)
 	{
 		if (!err && response.statusCode == 200) {
@@ -83,12 +99,28 @@ writeStream.write('Name,' + 'County,'+'Indictment,'+'Defendant Number,'+'DOB,'+
          	offDesc,place,date,type,ageAtSentence,jail,paroleIn,
          	prob,penalty,fine,labFee,dedr,restituion,judge,comments);
 		}
-		writeStream.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		if(num<=1000){
+			writeStream1.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
+		if(1000<num && num<=2000)
+		{
+			writeStream2.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
+		if(2000<num && num<=3000)
+		{
+			writeStream3.write(name+','+county+','+indicment+','+defNum+','+dob+','+ageToday+','+offDesc+','+place+','+date+','+type+','+ageAtSentence+','+jail+','+paroleIn+','+prob+','+penalty+','+fine+','+labFee+','+dedr+','+restituion+','+judge+','+comments+'\n');
+		}
 	});
-   num++;
-	getCourtData(num);
+
+    // waits 5 seconds between each record
+    setTimeout(function(){
+	   	num++;
+	   	getCourtData(num);
+   	},5000);
+   
 };
-getCourtData(1)
+// initiliaze the process
+getCourtData(1);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
