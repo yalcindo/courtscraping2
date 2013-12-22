@@ -33,11 +33,11 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-writeStream.write('LastName,'+'Name,' + 'County,'+'Indictment,'+'Defendant Number,'+'DOB,'+
+writeStream.write('Name,' + 'County,'+'Indictment,'+'Defendant Number,'+'DOB,'+
 	'Age Today,' + 'Offense Description,' + 'Sentencing Place,'+'Sentencing Date,'+'Sentencing Type ,'+'Age at sentence,'+
-	'Jail,' + 'Parole Ineligibility,'+'Probation,'+'Penalty,' + 'Fine,'+'Lab Fee,'+ 'DEDR,'+'Restitution,'+'Judge Lastname,' + 'Judge Firstname,' + 'Comments'+'\n');
+	'Jail,' + 'Parole Ineligibility,'+'Probation,'+'Penalty,' + 'Fine,'+'Lab Fee,'+ 'DEDR,'+'Restitution,'+'Judge,' + 'Comments'+'\n');
 
-	request("http://php.app.com/njsent/details.php?recordID=3",function(err,response,body)
+	request("http://php.app.com/njsent/details.php?recordID=1",function(err,response,body)
 	{
 		if (!err && response.statusCode == 200) {
 			$ =cheerio.load(body);
@@ -45,29 +45,41 @@ writeStream.write('LastName,'+'Name,' + 'County,'+'Indictment,'+'Defendant Numbe
 			$(".results tr").each(function(i,el)
 			{
 
-				var value1=$(this).children().eq(1).text();
-				var value2=$(this).children().eq(3).text();
-				value1 = value1.replace(";", " ");
-				value2 = value2.replace(";", " ");
+				var column1=$(this).children().eq(1).text();
+				var column2=$(this).children().eq(3).text();
+				
+				column1 = column1.replace(";", "");
+				column2 = column2.replace(";", "");
+				column1 = column1.replace(",", "");
+				column2 = column2.replace(",", "");
+				if(i!==0 && i!==4 && i!==6 && i!==10 && i!==13)
+				{
+					if(column1==="")
+					{
+						column1="No information"
+					}
+					if(column2==="")
+					{
+						column2="No information"
+					}
+				}
 			
-				if(value1!=="" && value2!==""){
+				if(column1!=="" && column2!==""){
 					if(csvString==="")
 					{
-						csvString=value1+','+value2;
+						csvString=column1+','+column2;
 					}else{
-						csvString= csvString+','+value1+','+value2 ;
+						csvString= csvString+','+column1+','+column2 ;
 					}
-				}else if(value1)
+				}else if(column1)
 				{
-					console.log("value1",value1);
-					csvString=csvString+','+ value1;
-				}else if(value2)
+					csvString=csvString+','+ column1;
+				}else if(column2)
 				{
-					console.log("value2",value2);
-					csvString= csvString +','+value2;
+					csvString= csvString +','+column2;
 				}
 			});
-			  console.log(csvString);
+			 
           	writeStream.write(csvString + '\n');
          
 		}
